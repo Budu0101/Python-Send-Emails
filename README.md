@@ -2,10 +2,14 @@
 
 Python Send E-mails is a script that lets you send automatic E-Mails with Python and the SMTP library.
 
+## Warning
 
+If you get an error while running the script it's because of a bug I can't seem to fix yet. I welcome you to test the app and try to solv the bug. If you solved it, please open a Pull Request with the solved main.py script.
+For more details check the comments of the Tkinter GUI Pull Request.
 ## Installation
 
 Python should come pre-installed with smtplib which is a required library for this project.
+If not, a **pip install smtplib** should work.
 
 
 ## Usage
@@ -20,23 +24,73 @@ s = smtplib.SMTP('smtp.gmail.com', 587)
 #Start TLS based SMTP Session
 s.starttls() 
 
-#Login Using Your E-mail & Password
-s.login("<sender-E-mail-address>", "<sender-E-mail-password")
+# Importing the SMTP library which handles sending E-mails and routing E-mails between mail servers.
+import smtplib
+from tkinter import *
 
-#Email Body Content
-message = """
-Hello, this is an example message!
-"""
 
-#To Send the E-mail
-s.sendmail("<sender-E-mail-address>", "<receiver-E-mail-address>", message)
+
+# create root window 
+root = Tk() 
   
-#Terminating the SMTP Session
-s.quit()
+# root window title and dimension 
+root.title("Python Send E-mails") 
+root.geometry('350x200') 
+
+#Establish SMTP Connection
+s = smtplib.SMTP('smtp.gmail.com', 587)
+
+#Start TLS based SMTP Session
+s.starttls() 
+
+# adding the Sender E-mail label to the root window 
+lbl_1 = Label(root, text = "Sender E-mail address: ") 
+lbl_1.grid() 
+
+# adding Entry Field 
+sender_e_mail_address = Entry(root, width=30) 
+sender_e_mail_address.grid(column = 1, row =0) 
+
+# adding the Sender E-mail label to the root window 
+lbl_2 = Label(root, text = "Receiver E-mail address: ") 
+lbl_2.grid() 
+
+# adding Entry Field 
+receiver_e_mail_address = Entry(root, width=30) 
+receiver_e_mail_address.grid(column = 1, row =1) 
+  
+# function to display text when 
+# button is clicked 
+def clicked(): 
+    #Login Using Your E-mail & Password
+    s.login(sender_e_mail_address, "<sender-E-mail-password")
+
+    #Email Body Content
+    message = """
+    Hello, this is an example message!
+    """
+
+    #To Send the E-mail
+    s.sendmail(sender_e_mail_address, receiver_e_mail_address, message)
+    
+    #Terminating the SMTP Session
+    s.quit()
+
+    
+# button widget with text inside 
+btn = Button(root, text = "Send" , 
+             fg = "black", command=clicked) 
+  
+btn.grid(column=1, row=3) 
+
+
+root.mainloop()
+
 
 ```
 
-**IMPORTANT : If you're using Gmail you might need allowing less secure apps from your account settings.**
+**IMPORTANT : If you're using Gmail you might need to allow less secure apps from your account settings.
+When you try the script for the first time you might also need to go to your sender address and say that it was you to who ran the script to stop Google's warning that the program might not be secure.**
 
 ## Contributing
 
